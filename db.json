@@ -1,0 +1,43 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "amit123",
+      "email": "amit123@gmail.com",
+      "password": "password123"
+    },
+    {
+      "id": "2",
+      "username": "john456",
+      "email": "john456@gmail.com",
+      "password": "password456"
+    },
+    {
+      "id": "3",
+      "email": "emily.johnson@x.dummyjson.com",
+      "username": "emilys",
+      "password": "emilyspass"
+    },
+    {
+      "id": "9808",
+      "password": "emilyspass",
+      "expiresInMins": 60,
+      "username": "emilys"
+    }
+  ],
+  "resetRequests": [
+    {
+      "id": "aa73",
+      "userId": "3",
+      "email": "emily.johnson@x.dummyjson.com",
+      "username": "emilys",
+      "requestedAt": "2025-08-30T21:43:58.375Z"
+    },
+    {
+      "id": "88d9",
+      "userId": "9808",
+      "username": "emilys",
+      "requestedAt": "2025-08-30T21:45:29.338Z"
+    }
+  ]
+}
