@@ -8,10 +8,16 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import OutlinedInput from '@mui/material/OutlinedInput';
 
-function ForgotPassword({ open, handleClose }) {
+import { setForgotPasswordModal } from "../../redux/slices/userSlice";
+import { useDispatch, useSelector } from 'react-redux';
+
+function ForgotPassword() {
+  const dispatch = useDispatch();
   const [email, setEmail] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [message, setMessage] = React.useState('');
+
+ const forgotPasswordModal = useSelector((state) => state.userSlice.forgotPasswordModal);
 
   const handleChange = (e) => {
     setEmail(e.target.value);
@@ -48,8 +54,7 @@ function ForgotPassword({ open, handleClose }) {
 
   return (
     <Dialog
-      open={open}
-      onClose={handleClose}
+      open={forgotPasswordModal.open}
       slotProps={{
         paper: {
           component: 'form',
@@ -81,7 +86,7 @@ function ForgotPassword({ open, handleClose }) {
         {message && <DialogContentText color="error">{message}</DialogContentText>}
       </DialogContent>
       <DialogActions sx={{ pb: 3, px: 3 }}>
-        <Button onClick={handleClose} disabled={loading}>
+        <Button disabled={loading} onClick={() => dispatch(setForgotPasswordModal({ open: false, data: {} }))}>
           Cancel
         </Button>
         <Button variant="contained" type="submit" disabled={loading}>
@@ -92,9 +97,6 @@ function ForgotPassword({ open, handleClose }) {
   );
 }
 
-ForgotPassword.propTypes = {
-  handleClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-};
+
 
 export default ForgotPassword;

@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -20,6 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import LogoutIcon from '@mui/icons-material/Logout';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -123,6 +123,7 @@ const Layout = ({ children }) => {
 
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const location = window.location.pathname;
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -134,50 +135,82 @@ const Layout = ({ children }) => {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar position="fixed" open={open}>
-                <Toolbar>
-                    <IconButton
+            <Drawer variant="permanent" open={open}>
+                {/* Show open button only when drawer is closed */}
+                {!open && (
+                     <DrawerHeader>
+                        <IconButton
                         color="inherit"
                         aria-label="open drawer"
                         onClick={handleDrawerOpen}
-                        edge="start"
-                        sx={[
-                            {
-                                marginRight: 5,
-                            },
-                            open && { display: 'none' },
-                        ]}
+                        edge="end"
+                        sx={{ margin: "auto" }}
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        Mini variant drawer
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <Drawer variant="permanent" open={open}>
-                <DrawerHeader>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                    </IconButton>
-                </DrawerHeader>
+                     </DrawerHeader>
+                    
+                )}
+                {/* Show close button only when drawer is open */}
+                {open && (
+                    <DrawerHeader>
+                        <IconButton onClick={handleDrawerClose}>
+                            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                        </IconButton>
+                    </DrawerHeader>
+                )}
                 <Divider />
                 <List>
+
                     <ListItem sx={{ display: 'block' }}>
                         <ListItemButton
-                            sx={[
-                                {
-                                    minHeight: 48,
-                                    px: 2.5,
+                            onClick={() => navigate('/dashboard')}
+                            selected={window.location.pathname === '/dashboard'}
+                            sx={[{
+                                 minWidth: 48,
+                                 minHeight: 48,
+                                marginLeft: "-16px",
+                                padding: "10px 0px 10px 15px !important",
+                                px: 2.5,
+                                ...(window.location.pathname === '/dashboard' && { backgroundColor: theme.palette.action.selected }),
+                            },
+                            open
+                                ? {
+                                    justifyContent: 'initial',
+                                }
+                                : {
+                                    justifyContent: 'center',
                                 },
-                                open
-                                    ? {
-                                        justifyContent: 'initial',
-                                    }
-                                    : {
-                                        justifyContent: 'center',
-                                    },
+                            ]}
+                        >
+                            <ListItemIcon >
+                                {<DashboardIcon />}
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="Dashboard"
+                                sx={[open ? { opacity: 1 } : { opacity: 0 }]}
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem sx={{ display: 'block' }}>
+                        <ListItemButton
+                            onClick={() => navigate('/home')}
+                            selected={window.location.pathname === '/home'}
+                            sx={[{
+                                minWidth: 48,
+                                minHeight: 48,
+                                marginLeft: "-16px",
+                                padding: "10px 0px 10px 15px !important",
+                                px: 2.5,
+                                ...(window.location.pathname === '/home' && { backgroundColor: theme.palette.action.selected }),
+                            },
+                            open
+                                ? {
+                                    justifyContent: 'initial',
+                                }
+                                : {
+                                    justifyContent: 'center',
+                                },
                             ]}
                         >
                             <ListItemIcon >
@@ -185,15 +218,7 @@ const Layout = ({ children }) => {
                             </ListItemIcon>
                             <ListItemText
                                 primary="Home"
-                                sx={[
-                                    open
-                                        ? {
-                                            opacity: 1,
-                                        }
-                                        : {
-                                            opacity: 0,
-                                        },
-                                ]}
+                                sx={[open ? { opacity: 1 } : { opacity: 0 }]}
                             />
                         </ListItemButton>
                     </ListItem>
@@ -242,9 +267,11 @@ const Layout = ({ children }) => {
                                     open
                                         ? {
                                             opacity: 1,
+                                            m: 0,
                                         }
                                         : {
                                             opacity: 0,
+                                             m: 0,
                                         },
                                 ]}
                             />
@@ -253,8 +280,7 @@ const Layout = ({ children }) => {
 
                 </List>
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                <DrawerHeader />
+            <Box component="main" sx={{ flexGrow: 1 }}>
                 {children}
             </Box>
         </Box>

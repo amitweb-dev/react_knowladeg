@@ -15,8 +15,10 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './Forgotpassword';
 import AppTheme from '../../theme/AppTheme';
-import ColorModeSelect from '../../theme/ColorModeSelect';
+import ColorModeSelect from '../../theme/ColorModeSelect.jsx';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../../theme/CustomIcons.jsx';
+import { useDispatch } from 'react-redux';
+import { setForgotPasswordModal } from '../../redux/slices/userSlice';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -61,6 +63,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function Login(props) {
+  const dispatch = useDispatch();
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
@@ -69,9 +72,9 @@ export default function Login(props) {
   const [form, setForm] = React.useState({ email: '', password: '' });
   const navigate = props.navigate || ((window && window.location) ? (path) => window.location.href = path : () => {});
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
   const handleClose = () => {
     setOpen(false);
@@ -112,7 +115,7 @@ export default function Login(props) {
       if (data.accessToken) {
         sessionStorage.setItem('token', data.accessToken);
         alert('Login successful');
-        navigate('/home');
+        navigate('/dashboard');
       } else {
         alert('Login failed: No token received');
       }
@@ -219,7 +222,7 @@ export default function Login(props) {
               <Link
                 component="button"
                 type="button"
-                onClick={handleClickOpen}
+                onClick={() => dispatch(setForgotPasswordModal({ open: true, data: {} }))}
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
@@ -227,7 +230,7 @@ export default function Login(props) {
               </Link>
             </Box>
 
-            <ForgotPassword open={open} handleClose={handleClose} />
+            <ForgotPassword />
             <Button
               type="submit"
               fullWidth
